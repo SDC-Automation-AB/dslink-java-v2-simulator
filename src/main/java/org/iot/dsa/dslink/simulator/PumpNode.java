@@ -6,7 +6,7 @@ import org.iot.dsa.node.DSNode;
 
 public class PumpNode extends DSNode implements Runnable {
 
-    private int pollRate = 10;
+    private int pollRate;
     private DSRuntime.Timer timer;
 
     public PumpNode() {
@@ -15,6 +15,9 @@ public class PumpNode extends DSNode implements Runnable {
 
     public PumpNode(int pollRate) {
         this.pollRate = pollRate;
+        put(Constants.BOOLEAN, DSBool.valueOf(false));
+        setPumpDataNodeMetrics();
+        startTimer(pollRate);
     }
 
     @Override
@@ -23,16 +26,15 @@ public class PumpNode extends DSNode implements Runnable {
     }
 
 
-    @Override
-    protected void onStable() {
-        put(Constants.BOOLEAN, DSBool.valueOf(false));
-        setPumpDataNodeMetrics();
-        System.out.println("pumpnode pollRate: "+pollRate);
-        startTimer(pollRate);
-    }
+//    @Override
+//    protected void onStable() {
+//        put(Constants.BOOLEAN, DSBool.valueOf(false));
+//        setPumpDataNodeMetrics();
+//        startTimer(pollRate);
+//    }
 
     private void setPumpDataNodeMetrics() {
-        put(Constants.SPEED, Util.sample());
+        put(Constants.SPEED, Util.getFloatRandom(10.00,1.00));
     }
 
     /**
@@ -44,7 +46,7 @@ public class PumpNode extends DSNode implements Runnable {
     }
 
     private void startTimer(int seconds) {
-        System.out.println("seconds: "+seconds);
+        System.out.println("Seconds :" + seconds);
         timer = DSRuntime.run(this, System.currentTimeMillis() + (seconds * 1000), (seconds * 1000));
     }
 

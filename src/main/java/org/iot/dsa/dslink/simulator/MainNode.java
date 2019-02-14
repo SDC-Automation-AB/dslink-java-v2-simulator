@@ -18,8 +18,8 @@ public class MainNode extends DSMainNode {
     }
 
     private void displaySubNodes() {
-        int pollRate = 60;
-        put(Constants.PROPELLERS, new PropellersNode());
+        int pollRate = 10;
+        put(Constants.PROPELLERS, new PropellersNode(pollRate));
         put(Constants.WATERSYSTEM, new WaterSystemNode(pollRate));
         put(Constants.INFRASTRUCTURE, new InfrastructureNode(pollRate));
     }

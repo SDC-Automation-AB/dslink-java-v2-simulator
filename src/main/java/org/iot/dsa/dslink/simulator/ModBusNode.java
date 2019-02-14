@@ -29,15 +29,15 @@ public class ModBusNode extends DSNode implements Runnable {
     }
 
     private void setModBusDataNodeMetrics() {
-        put(Constants.VOLTAGE1, Util.sample());
-        put(Constants.VOLTAGE2, Util.sample());
-        put(Constants.VOLTAGE3, Util.sample());
-        put(Constants.AVGTEMP, Util.sample());
-        put(Constants.AVGHUMIDITY, Util.sample());
-        put(Constants.AVGENERGY, Util.sample());
-        put(Constants.TOTALPWR, Util.sample());
-        put(Constants.OTHERPWR1, Util.sample());
-        put(Constants.OTHERPWR2, Util.sample());
+        put(Constants.VOLTAGE1, Util.getIntRandom(130,107));
+        put(Constants.VOLTAGE2, Util.getIntRandom(130,107));
+        put(Constants.VOLTAGE3, Util.getIntRandom(130,107));
+        put(Constants.AVGTEMP, Util.getIntRandom(80,60));
+        put(Constants.AVGHUMIDITY, Util.getIntRandom(30,0));
+        put(Constants.AVGENERGY, Util.getIntRandom(110,60));
+        put(Constants.TOTALPWR, Util.getIntRandom(100,20));
+        put(Constants.OTHERPWR1, Util.getIntRandom(100,20));
+        put(Constants.OTHERPWR2, Util.getIntRandom(100,20));
     }
 
     /**

@@ -12,6 +12,7 @@ public class PropellersNode extends DSNode {
 
     public PropellersNode(int pollRate) {
         this.pollRate = pollRate;
+        createPumpNodes();
     }
 
     @Override
@@ -19,10 +20,10 @@ public class PropellersNode extends DSNode {
         super.declareDefaults();
     }
 
-    @Override
-    protected void onStable() {
-        createPumpNodes();
-    }
+//    @Override
+//    protected void onStable() {
+//        createPumpNodes();
+//    }
 
     @Override
     protected void onSubscribed() {
@@ -33,7 +34,7 @@ public class PropellersNode extends DSNode {
         String[] strArr = {"Pump 1", "Pump 2", "Pump 3", "Pump 4"};
         for (int index = 0; index < strArr.length; index++) {
             String linkName = strArr[index];
-            System.out.println("pollRate: "+pollRate);
+            System.out.println("createPumpNodes - pollRate :" + pollRate);
             put(linkName, new PumpNode(pollRate));
         }
     }

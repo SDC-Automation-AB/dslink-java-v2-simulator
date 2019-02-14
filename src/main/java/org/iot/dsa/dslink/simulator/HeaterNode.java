@@ -2,6 +2,7 @@ package org.iot.dsa.dslink.simulator;
 
 import org.iot.dsa.DSRuntime;
 import org.iot.dsa.node.DSBool;
+import org.iot.dsa.node.DSInfo;
 import org.iot.dsa.node.DSInt;
 import org.iot.dsa.node.DSNode;
 
@@ -33,8 +34,8 @@ public class HeaterNode extends DSNode implements Runnable {
     }
 
     private void setHeaterDataNodeMetrics() {
-        put(Constants.CURRENTTEMP, Util.sample());
-        put(Constants.WATTAGE, Util.sample());
+        put(Constants.CURRENTTEMP, Util.getFloatRandom(85.00, 60.00));
+        put(Constants.WATTAGE, Util.getIntRandom(4000,0));
     }
 
     /**
