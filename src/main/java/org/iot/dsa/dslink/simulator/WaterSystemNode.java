@@ -4,14 +4,10 @@ import org.iot.dsa.node.DSNode;
 
 public class WaterSystemNode extends DSNode {
 
-    private int pollRate;
-
-    public WaterSystemNode() {
-
-    }
+    public WaterSystemNode() { }
 
     public WaterSystemNode(int pollRate) {
-        this.pollRate = pollRate;
+        createWaterSystemNodes(pollRate);
     }
 
     @Override
@@ -19,21 +15,11 @@ public class WaterSystemNode extends DSNode {
         super.declareDefaults();
     }
 
-    @Override
-    protected void onStable() {
-        createWaterSystemNodes();
-    }
-
-    @Override
-    protected void onSubscribed() {
-        super.onSubscribed();
-    }
-
-    private void createWaterSystemNodes() {
+    private void createWaterSystemNodes(int pollRate) {
         String[] strArr = {"Heater 1", "Heater 2", "Heater 3", "Heater 4"};
         for (int index = 0; index < strArr.length; index++) {
             String linkName = strArr[index];
-            put(linkName, new HeaterNode(this.pollRate));
+            put(linkName, new HeaterNode(pollRate));
         }
     }
 }

@@ -5,27 +5,16 @@ import org.iot.dsa.node.DSNode;
 
 public class ModBusNode extends DSNode implements Runnable {
 
-    private int pollRate;
-    private DSRuntime.Timer timer;
-
-    public ModBusNode() {
-
-    }
+    public ModBusNode() { }
 
     public ModBusNode(int pollRate) {
-        this.pollRate = pollRate;
+        setModBusDataNodeMetrics();
+        startTimer(pollRate);
     }
 
     @Override
     protected void declareDefaults() {
         super.declareDefaults();
-    }
-
-
-    @Override
-    protected void onStable() {
-        setModBusDataNodeMetrics();
-        startTimer(this.pollRate);
     }
 
     private void setModBusDataNodeMetrics() {
@@ -40,19 +29,12 @@ public class ModBusNode extends DSNode implements Runnable {
         put(Constants.OTHERPWR2, Util.getIntRandom(100,20));
     }
 
-    /**
-     * Called by the timer, increments the counter.
-     */
     @Override
     public void run() {
         setModBusDataNodeMetrics();
     }
 
     private void startTimer(int seconds) {
-        timer = DSRuntime.run(this, System.currentTimeMillis() + (seconds * 1000), (seconds * 1000));
-    }
-
-    private void stopTimer() {
-        timer.cancel();
+        DSRuntime.run(this, System.currentTimeMillis() + (seconds * 1000), (seconds * 1000));
     }
 }

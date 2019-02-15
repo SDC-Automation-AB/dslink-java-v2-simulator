@@ -4,14 +4,10 @@ import org.iot.dsa.node.DSNode;
 
 public class InfrastructureNode extends DSNode {
 
-    private int pollRate;
-
-    public InfrastructureNode() {
-
-    }
+    public InfrastructureNode() { }
 
     public InfrastructureNode(int pollRate) {
-        this.pollRate = pollRate;
+        createInfrastructureNodes(pollRate);
     }
 
     @Override
@@ -19,17 +15,7 @@ public class InfrastructureNode extends DSNode {
         super.declareDefaults();
     }
 
-    @Override
-    protected void onStable() {
-        createInfrastructureNodes();
-    }
-
-    @Override
-    protected void onSubscribed() {
-        super.onSubscribed();
-    }
-
-    private void createInfrastructureNodes() {
+    private void createInfrastructureNodes(int pollRate) {
         put(Constants.BACNET, new BacNetNode(pollRate));
         put(Constants.MODBUS, new ModBusNode(pollRate));
     }

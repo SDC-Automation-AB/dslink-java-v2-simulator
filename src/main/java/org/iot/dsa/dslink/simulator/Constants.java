@@ -33,5 +33,9 @@ public class Constants {
     public static final String OTHERPWR1 = "Other Power 1";
     public static final String OTHERPWR2 = "Other Power 1";
 
+    public static final String POLLRATE = "Poll Rate";
+    public static final String VALUE = "Value : ";
+    public static final int DEFAULTPOLLRATE = 10;
+
 
 }
