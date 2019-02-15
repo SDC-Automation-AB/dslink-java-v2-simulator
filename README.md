@@ -24,7 +24,7 @@ This link was built using the DSLink Java SDK which can be found
 
 This section outlines the hierarchy of nodes defined by this link.
 
-- _MainNode_ - The root node of the link(ACTION : To update the pollRate value [Default Value : 10 Sec]).
+- _MainNode_ - The root node of the link has an action to update the pollRate value [Default Value : 10 Sec]).
   - _Propellers_ - Propellers.
     - _Pump 1_ :
         - Boolean (On/Off) (Mock settable)
