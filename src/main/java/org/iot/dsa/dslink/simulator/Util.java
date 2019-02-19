@@ -17,10 +17,10 @@ public class Util {
         return rVal;
     }
 
-    public static String getFloatRandom(double upper, double lower) {
+    public static Float getFloatRandom(double upper, double lower) {
         double rVal = (Math.random() * (upper - lower)) + lower;
         DecimalFormat twoDForm = new DecimalFormat("#.00");
-        return twoDForm.format(rVal);
+        return Float.parseFloat(twoDForm.format(rVal));
     }
 
     public static boolean checkIntRange(int val, int upper, int lower) {

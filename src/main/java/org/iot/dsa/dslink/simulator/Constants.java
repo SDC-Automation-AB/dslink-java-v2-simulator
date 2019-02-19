@@ -16,12 +16,12 @@ public class Constants {
     public static final String MODE = "Mode";
     public static final String SETPOINT = "Set Point";
     public static final String HUMIDITY = "Humidity";
-    public static final String MODEL = "Model :";
+    public static final String MODEL = "Model ";
     public static final String RTU1 = "RTU 1";
     public static final String RTU2 = "RTU 2";
     public static final String COOLING  = "Cooling";
     public static final String HEATING = "Heating";
-    public static final String SAT = "SAT :";
+    public static final String SAT = "SAT";
     public static final String MODBUS = "ModBus";
     public static final String VOLTAGE1 = "Voltage 1";
     public static final String VOLTAGE2 = "Voltage 2";

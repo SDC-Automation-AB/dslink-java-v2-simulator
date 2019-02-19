@@ -19,7 +19,7 @@ public class PumpNode extends DSNode implements Runnable {
     }
 
     private void setPumpDataNodeMetrics() {
-        put(Constants.SPEED, Util.getFloatRandom(10.00,1.00));
+        put(Constants.SPEED, Util.getFloatRandom(10.00,1.00)).setReadOnly(true);
     }
 
     @Override

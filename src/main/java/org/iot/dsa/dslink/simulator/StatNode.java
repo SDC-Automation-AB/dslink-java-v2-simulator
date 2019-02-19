@@ -16,14 +16,14 @@ public class StatNode extends DSNode implements Runnable {
 
     @Override
     protected void declareDefaults() {
-        declareDefault(Constants.MODEL, DSString.valueOf("VT8600"));
+        declareDefault(Constants.MODEL, DSString.valueOf("VT8600")).setReadOnly(true);
         declareDefault(Constants.MODE, Util.getStatModes());
         put(Constants.SETPOINT, DSInt.valueOf(1));
     }
 
     private void setStatDataNodeMetrics() {
-        put(Constants.CURRENTTEMP, Util.getFloatRandom(99.00, 40.00));
-        put(Constants.HUMIDITY, Util.getIntRandom(100, 0));
+        put(Constants.CURRENTTEMP, Util.getFloatRandom(99.00, 40.00)).setReadOnly(true);
+        put(Constants.HUMIDITY, Util.getIntRandom(100, 0)).setReadOnly(true);
     }
 
     @Override

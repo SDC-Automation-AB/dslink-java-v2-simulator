@@ -21,8 +21,8 @@ public class HeaterNode extends DSNode implements Runnable {
     }
 
     private void setHeaterDataNodeMetrics() {
-        put(Constants.CURRENTTEMP, Util.getFloatRandom(85.00, 60.00));
-        put(Constants.WATTAGE, Util.getIntRandom(4000,0));
+        put(Constants.CURRENTTEMP, Util.getFloatRandom(85.00, 60.00)).setReadOnly(true);
+        put(Constants.WATTAGE, Util.getIntRandom(4000,0)).setReadOnly(true);
     }
 
     @Override

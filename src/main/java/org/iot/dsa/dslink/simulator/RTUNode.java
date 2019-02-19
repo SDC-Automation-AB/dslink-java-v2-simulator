@@ -20,7 +20,7 @@ public class RTUNode extends DSNode implements Runnable {
     }
 
     private void setRTUDataNodeMetrics() {
-        put(Constants.SAT, Util.getFloatRandom(99.00, 40.00));
+        put(Constants.SAT, Util.getFloatRandom(99.00, 40.00)).setReadOnly(true);
     }
 
     @Override
