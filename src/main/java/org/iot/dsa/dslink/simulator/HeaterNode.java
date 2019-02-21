@@ -2,7 +2,8 @@ package org.iot.dsa.dslink.simulator;
 
 import org.iot.dsa.DSRuntime;
 import org.iot.dsa.node.DSBool;
-import org.iot.dsa.node.DSInt;
+import org.iot.dsa.node.DSFloat;
+import org.iot.dsa.node.DSInfo;
 import org.iot.dsa.node.DSNode;
 
 public class HeaterNode extends DSNode implements Runnable {
@@ -17,7 +18,7 @@ public class HeaterNode extends DSNode implements Runnable {
     @Override
     protected void declareDefaults() {
         declareDefault(Constants.BOOLEAN, DSBool.valueOf(false));
-        declareDefault(Constants.TARGETTEMP, DSInt.valueOf(1));
+        declareDefault(Constants.TARGETTEMP, DSFloat.valueOf("72.50"));
     }
 
     private void setHeaterDataNodeMetrics() {
@@ -32,5 +33,13 @@ public class HeaterNode extends DSNode implements Runnable {
 
     private void startTimer(int seconds) {
         DSRuntime.run(this, System.currentTimeMillis() + (seconds * 1000), (seconds * 1000));
+    }
+
+    @Override
+    protected void onChildChanged(DSInfo info) {
+        if((info.getName() == Constants.TARGETTEMP) &&
+          (Util.checkFloatRange(Double.parseDouble(info.getValue().toString()), 85.00, 60.00))) {
+            put(info.getName(), DSFloat.valueOf("72.50"));
+        }
     }
 }

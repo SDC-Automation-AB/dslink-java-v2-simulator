@@ -24,11 +24,11 @@ public class Util {
     }
 
     public static boolean checkIntRange(int val, int upper, int lower) {
-        return val > lower & val < upper ? true : false;
+        return !(val > lower & val < upper);
     }
 
     public static boolean checkFloatRange(double val, double upper, double lower) {
-        return val > lower & val < upper ? true : false;
+        return !(val > lower & val < upper);
     }
 
     public static DSFlexEnum getStatModes(){

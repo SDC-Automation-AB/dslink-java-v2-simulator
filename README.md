@@ -11,7 +11,8 @@ simulated for visualization within DGLux. This project would consist of a self-c
 that generates random data with data labels within fixed ranges and exposes these values via
 DSA to DGLux. Values would mostly be read only, however several would also allow a nonparsistant
 SET capability to allow users using the DSlink to experiment with Setting values in a
-DSLink from DDGLux. (Noted as Mock settable)
+DSLink from DDGLux. (Noted as Mock settable, Default values are set. If on setting value which is
+not in provided range, then it will set to default value)
 
 If you are not familiar with DSA and links, an overview can be found at
 [here](http://iot-dsa.org/get-started/how-dsa-works).
@@ -42,25 +43,25 @@ This section outlines the hierarchy of nodes defined by this link.
      - _Heater 1_ :
         - Boolean (On/Off) (Mock settable)
         - Current Temperature (Float: Range value from 60.00-85.00)
-        - Target Temperature (Float: Range value from 60.00-85.00) (Mock settable)
+        - Target Temperature (Float: Range value from 60.00-85.00) (Default Value : 72.5) (Mock settable)
         - Wattage (Decimal Range Value from 0-4000)
         - Units: String: Watts
     - _Heater 2_ :
         - Boolean (On/Off) (Mock settable)
         - Current Temperature (Float: Range value from 60.00-85.00)
-        - Target Temperature (Float: Range value from 60.00-85.00) (Mock settable)
+        - Target Temperature (Float: Range value from 60.00-85.00) (Default Value : 72.5) (Mock settable)
         - Wattage (Decimal Range Value from 0-4000)
         - Units: String: Watts
      - _Heater 3_ :
         - Boolean (On/Off) (Mock settable)
         - Current Temperature (Float: Range value from 60.00-85.00)
-        - Target Temperature (Float: Range value from 60.00-85.00) (Mock settable)
+        - Target Temperature (Float: Range value from 60.00-85.00) (Default Value : 72.5) (Mock settable)
         - Wattage (Decimal Range Value from 0-4000)
         - Units: String: Watts
     - _Heater 4_ :
         - Boolean (On/Off) (Mock settable)
         - Current Temperature (Float: Range value from 60.00-85.00)
-        - Target Temperature (Float: Range value from 60.00-85.00) (Mock settable)
+        - Target Temperature (Float: Range value from 60.00-85.00) (Default Value : 72.5) (Mock settable)
         - Wattage (Decimal Range Value from 0-4000)
         - Units: String: Watts
   - _Infrastructure_ - Infrastructure.
@@ -68,13 +69,13 @@ This section outlines the hierarchy of nodes defined by this link.
         - _Stat 1_ :
             - Mode (enum: Heat, Cool, Fan, Off) (Mock settable)
             - Current Temp (Float: Range value from 40.00-99.00)
-            - Set Point (Decimal: Range value from 40-90) (Mock settable)
+            - Set Point (Decimal: Range value from 40-90) (Default Value : 65) (Mock settable)
             - Humidity (Percentage: 0-100)
             - Model: VT8600
         - _Stat 2_ :
             - Mode (enum: Heat, Cool, Fan, Off) (Mock settable)
             - Current Temp (Float: Range value from 40.00-99.00)
-            - Set Point (Decimal: Range value from 40-90) (Mock settable)
+            - Set Point (Decimal: Range value from 40-90) (Default Value : 65) (Mock settable)
             - Humidity (Percentage: 0-100)
             - Model: VT8600
         - _RTU 1_ :
