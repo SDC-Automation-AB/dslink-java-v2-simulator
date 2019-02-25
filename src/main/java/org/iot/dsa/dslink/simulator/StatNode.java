@@ -1,12 +1,16 @@
 package org.iot.dsa.dslink.simulator;
 
 import org.iot.dsa.DSRuntime;
+import org.iot.dsa.node.DSElement;
 import org.iot.dsa.node.DSInfo;
 import org.iot.dsa.node.DSInt;
 import org.iot.dsa.node.DSNode;
 import org.iot.dsa.node.DSString;
 
 public class StatNode extends DSNode implements Runnable {
+
+    private final DSInfo currentTemp = getInfo(Constants.CURRENTTEMP);
+    private final DSInfo humidity = getInfo(Constants.HUMIDITY);
 
     public StatNode() { }
 
@@ -19,12 +23,14 @@ public class StatNode extends DSNode implements Runnable {
     protected void declareDefaults() {
         declareDefault(Constants.MODEL, DSString.valueOf("VT8600")).setReadOnly(true);
         declareDefault(Constants.MODE, Util.getStatModes());
-        put(Constants.SETPOINT, DSInt.valueOf(65));
+        declareDefault(Constants.SETPOINT, DSInt.valueOf(65));
+        declareDefault(Constants.CURRENTTEMP, DSElement.make(Util.getFloatRandom(99.00, 40.00))).setReadOnly(true);
+        declareDefault(Constants.HUMIDITY, DSElement.make(Util.getIntRandom(100, 0))).setReadOnly(true);
     }
 
     private void setStatDataNodeMetrics() {
-        put(Constants.CURRENTTEMP, Util.getFloatRandom(99.00, 40.00)).setReadOnly(true);
-        put(Constants.HUMIDITY, Util.getIntRandom(100, 0)).setReadOnly(true);
+        put(currentTemp.getName(), Util.getFloatRandom(99.00, 40.00));
+        put(humidity.getName(), Util.getIntRandom(100, 0));
     }
 
     @Override

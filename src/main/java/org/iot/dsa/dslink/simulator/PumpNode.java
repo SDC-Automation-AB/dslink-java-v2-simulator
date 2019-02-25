@@ -2,9 +2,13 @@ package org.iot.dsa.dslink.simulator;
 
 import org.iot.dsa.DSRuntime;
 import org.iot.dsa.node.DSBool;
+import org.iot.dsa.node.DSElement;
+import org.iot.dsa.node.DSInfo;
 import org.iot.dsa.node.DSNode;
 
 public class PumpNode extends DSNode implements Runnable {
+
+    private final DSInfo speed = getInfo(Constants.SPEED);
 
     public PumpNode() { }
 
@@ -16,10 +20,11 @@ public class PumpNode extends DSNode implements Runnable {
     @Override
     protected void declareDefaults() {
         declareDefault(Constants.BOOLEAN, DSBool.valueOf(false));
+        declareDefault(Constants.SPEED, DSElement.make(Util.getFloatRandom(10.00,1.00))).setReadOnly(true);
     }
 
     private void setPumpDataNodeMetrics() {
-        put(Constants.SPEED, Util.getFloatRandom(10.00,1.00)).setReadOnly(true);
+        put(speed.getName(), Util.getFloatRandom(10.00,1.00));
     }
 
     @Override
