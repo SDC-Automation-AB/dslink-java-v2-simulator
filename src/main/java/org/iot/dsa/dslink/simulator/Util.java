@@ -1,16 +1,11 @@
 package org.iot.dsa.dslink.simulator;
 
 import org.iot.dsa.node.DSFlexEnum;
-import org.iot.dsa.node.DSIEnum;
 import org.iot.dsa.node.DSList;
 
 import java.text.DecimalFormat;
 
 public class Util {
-
-    public static long sample(){
-        return Math.round(Math.random()*10);
-    }
 
     public static int getIntRandom(int upper, int lower) {
         int rVal = (int) (Math.random() * (upper - lower)) + lower;
