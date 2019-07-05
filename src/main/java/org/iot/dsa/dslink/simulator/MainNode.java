@@ -19,6 +19,7 @@ public class MainNode extends DSMainNode {
     protected void declareDefaults() {
         super.declareDefaults();
         declareDefault(Constants.POLLRATE, updatePollRate());
+        declareDefault(Constants.ADDNODE, addCustomNode());
         declareDefault(Constants.DISPPOLLRATE, DSInt.valueOf("")).setReadOnly(true);
         declareDefault("Help",
                 DSString.valueOf("https://github.com/iot-dsa-v2/dslink-java-v2-simulator"))
@@ -29,6 +30,23 @@ public class MainNode extends DSMainNode {
     @Override
     protected void onStable() {
         displaySubNodes(Constants.DEFAULTPOLLRATE);
+    }
+
+    private DSAction addCustomNode() {
+        DSAction act = new DSAction.Parameterless() {
+            @Override
+            public ActionResult invoke(DSInfo info, ActionInvocation invocation) {
+                return ((MainNode) info.get()).customNode(this,invocation.getParameters());
+            }
+        };
+        act.addParameter(Constants.NAME, DSValueType.STRING, "Name");
+        return act;
+    }
+
+    private ActionResult customNode(DSAction action,DSMap parameters){
+        DSActionValues actionResult = new DSActionValues(action);
+        put(parameters.getString(Constants.NAME), new CustomNode(Constants.CUSTOMDEFAULTPOLLRATE));
+        return actionResult;
     }
 
     private DSAction updatePollRate() {

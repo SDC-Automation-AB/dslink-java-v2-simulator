@@ -33,4 +33,11 @@ public class Util {
         DSFlexEnum selectEnum = DSFlexEnum.valueOf("OFF",selectList);
         return selectEnum;
     }
+
+    public static DSFlexEnum getTypeList(){
+        DSList selectList = new DSList().add("string")
+                .add("number").add("bool").add("array").add("map").add("binary").add("dynamic");
+        DSFlexEnum selectEnum = DSFlexEnum.valueOf("string",selectList);
+        return selectEnum;
+    }
 }

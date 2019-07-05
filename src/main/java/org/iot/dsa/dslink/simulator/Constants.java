@@ -35,8 +35,13 @@ public class Constants {
 
     public static final String POLLRATE = "PollRate";
     public static final String DISPPOLLRATE = "Poll Rate";
-    public static final String VALUE = "Value : ";
+    public static final String VALUE = "Value";
     public static final int DEFAULTPOLLRATE = 10;
+    public static final int CUSTOMDEFAULTPOLLRATE = 10;
+    public static final String READWRITE = "ReadWrite";
 
-
+    public static final String ADDNODE = "Add Custom Node";
+    public static final String NAME = "Name";
+    public static final String TYPE = "Type";
+    public static final String NUMBER = "Number";
 }
