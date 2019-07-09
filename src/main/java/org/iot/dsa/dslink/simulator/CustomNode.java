@@ -4,6 +4,7 @@ import org.iot.dsa.DSRuntime;
 import org.iot.dsa.logging.DSLogger;
 import org.iot.dsa.node.DSBool;
 import org.iot.dsa.node.DSInfo;
+import org.iot.dsa.node.DSInt;
 import org.iot.dsa.node.DSMap;
 import org.iot.dsa.node.DSNode;
 import org.iot.dsa.node.DSValueType;
@@ -12,11 +13,14 @@ import org.iot.dsa.node.action.ActionResult;
 import org.iot.dsa.node.action.DSAction;
 import org.iot.dsa.node.action.DSActionValues;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CustomNode extends DSNode implements Runnable {
 
-    private float maxValue = 50;
-    private float minValue = 60;
-    private String strNodeName;
+    private HashMap<String, String> nodeNameMapSet = new HashMap<>();
+    private HashMap<String, String> nodeNameMap = new HashMap<>();
+    private DSRuntime.Timer timer;
     public CustomNode() { }
 
     public CustomNode(int pollRate) {
@@ -25,9 +29,34 @@ public class CustomNode extends DSNode implements Runnable {
 
     @Override
     protected void declareDefaults() {
-        declareDefault(Constants.POLLRATE, updatePollRate());
         declareDefault(Constants.ADDNODE, addCustomNode());
         declareDefault(Constants.VALUE, addCustomValue());
+        declareDefault(Constants.POLLRATE, updateNodePollRate());
+        declareDefault(Constants.DISPPOLLRATE, DSInt.valueOf("")).setReadOnly(true);
+    }
+
+    @Override
+    protected void onStable() {
+        put(Constants.DISPPOLLRATE, Constants.DEFAULTPOLLRATE);
+    }
+
+    private DSAction updateNodePollRate() {
+        DSAction act = new DSAction.Parameterless() {
+            @Override
+            public ActionResult invoke(DSInfo info, ActionInvocation invocation) {
+                return ((CustomNode) info.get()).updateNodePR(this,invocation.getParameters());
+            }
+        };
+        act.addParameter(Constants.VALUE, DSValueType.NUMBER, "PollRate");
+        return act;
+    }
+
+    private ActionResult updateNodePR(DSAction action,DSMap parameters){
+        DSActionValues actionResult = new DSActionValues(action);
+        stopTimer();
+        startTimer(Integer.parseInt(parameters.getString(Constants.VALUE)));
+        put(Constants.DISPPOLLRATE, Integer.parseInt(parameters.getString(Constants.VALUE)));
+        return actionResult;
     }
 
     private DSAction addCustomValue() {
@@ -46,16 +75,21 @@ public class CustomNode extends DSNode implements Runnable {
 
     private ActionResult custValue(DSAction action,DSMap parameters){
         DSLogger log = new DSLogger();
+        log.info("string match");
         DSActionValues actionResult = new DSActionValues(action);
         String valName = parameters.getString(Constants.NAME);
         switch(parameters.getString(Constants.TYPE)) {
             case "string":
                 log.info("string match");
-                put(valName, parameters.getString(Constants.VALUE));
+                if(!parameters.getBoolean(Constants.READWRITE)) {
+                    put(valName, parameters.getString(Constants.VALUE)).setReadOnly(true);
+                } else {
+                    put(valName, parameters.getString(Constants.VALUE));
+                }
                 break;
             case "number":
                 log.info("number match");
-                addNumberValue(valName, parameters.getString(Constants.VALUE));
+                addNumberValue(valName, parameters.getString(Constants.VALUE), parameters.getBoolean(Constants.READWRITE));
                 break;
             case "bool":
                 log.info("bool match");
@@ -67,47 +101,36 @@ public class CustomNode extends DSNode implements Runnable {
         return actionResult;
     }
 
-    private void addNumberValue(String valName, String value) {
-        if(!(value.contains(":"))) {
-            put(valName, Integer.parseInt(value)).setReadOnly(true);
-            return;
+    private void addNumberValue(String valName, String value, Boolean rwFlag) {
+        Float nodeVal;
+        if(value.contains(":")) {
+            String[] arrOfVal = value.split(":");
+            nodeVal = Util.getFloatRandom(Float.parseFloat(arrOfVal[1]),
+                    Float.parseFloat(arrOfVal[0]));
+            if(!rwFlag) {
+                nodeNameMapSet.put(valName, value);
+                put(valName, nodeVal).setReadOnly(true);
+            } else {
+                nodeNameMap.put(valName, value);
+                put(valName, nodeVal);
+            }
+        } else {
+            nodeVal = Float.parseFloat(value);
+            if(!rwFlag) {
+                put(valName, nodeVal).setReadOnly(true);
+            } else {
+                put(valName, nodeVal);
+            }
         }
-        setNodeName(valName);
-        String[] arrOfVal = value.split(":");
-        setMinVal(Float.parseFloat(arrOfVal[0]));
-        setMaxVal(Float.parseFloat(arrOfVal[1]));
 
-        setCustomNodeValue();
-    }
-
-    private void setNodeName(String valName) {
-        strNodeName = valName;
-    }
-
-    private String getNodeName() {
-        return strNodeName;
-    }
-
-    private void setMaxVal(float maxVal) {
-        maxValue = maxVal;
-    }
-
-    private float getMaxVal() {
-        return maxValue;
-    }
-
-    private void setMinVal(float minVal) {
-        minValue = minVal;
-    }
-
-    private float getMinVal() {
-        return minValue;
     }
 
     private void setCustomNodeValue() {
-        DSLogger log = new DSLogger();
-        log.info("Name : " + getNodeName());
-        put(getNodeName(), Util.getFloatRandom(getMaxVal(), getMinVal()));
+        for (Map.Entry<String,String> entry : nodeNameMapSet.entrySet()) {
+            String[] arrOfVal = entry.getValue().split(":");
+            put(entry.getKey(), Util.getFloatRandom(Float.parseFloat(arrOfVal[1]),
+                    Float.parseFloat(arrOfVal[0]))).setReadOnly(true);
+        }
     }
 
     private DSAction addCustomNode() {
@@ -127,29 +150,32 @@ public class CustomNode extends DSNode implements Runnable {
         return actionResult;
     }
 
-    private DSAction updatePollRate() {
-        DSAction act = new DSAction.Parameterless() {
-            @Override
-            public ActionResult invoke(DSInfo info, ActionInvocation invocation) {
-                return ((CustomNode) info.get()).updatePR(this,invocation.getParameters());
-            }
-        };
-        act.addParameter(Constants.VALUE, DSValueType.NUMBER, "PollRate");
-        return act;
-    }
-
-    private ActionResult updatePR(DSAction action,DSMap parameters){
-        DSActionValues actionResult = new DSActionValues(action);
-        put(Constants.DISPPOLLRATE, Integer.parseInt(parameters.getString(Constants.VALUE)));
-        return actionResult;
-    }
-
     @Override
     public void run() {
         setCustomNodeValue();
     }
 
     private void startTimer(int seconds) {
-        DSRuntime.run(this, System.currentTimeMillis() + (seconds * 1000), (seconds * 1000));
+        timer = DSRuntime.run(this, System.currentTimeMillis() + (seconds * 1000), (seconds * 1000));
+    }
+
+    private void stopTimer() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+    @Override
+    protected void onChildChanged(DSInfo info) {
+        for (Map.Entry<String,String> entry : nodeNameMap.entrySet()) {
+            String[] arrOfVal = entry.getValue().split(":");
+            if((info.getName() == entry.getKey()) &&
+                    (Util.checkFloatRange(Double.parseDouble(info.getValue().toString()),
+                            Float.parseFloat(arrOfVal[1]), Float.parseFloat(arrOfVal[0])))) {
+                put(entry.getKey(), Util.getFloatRandom(Float.parseFloat(arrOfVal[1]),
+                        Float.parseFloat(arrOfVal[0])));
+            }
+        }
     }
 }
