@@ -1,12 +1,15 @@
 package org.iot.dsa.dslink.simulator;
 
-import org.iot.dsa.dslink.ActionResults;
 import org.iot.dsa.dslink.DSMainNode;
+import org.iot.dsa.node.DSInfo;
 import org.iot.dsa.node.DSInt;
 import org.iot.dsa.node.DSMap;
 import org.iot.dsa.node.DSString;
+import org.iot.dsa.node.DSValueType;
+import org.iot.dsa.node.action.ActionInvocation;
+import org.iot.dsa.node.action.ActionResult;
 import org.iot.dsa.node.action.DSAction;
-import org.iot.dsa.node.action.DSIActionRequest;
+import org.iot.dsa.node.action.DSActionValues;
 
 public class MainNode extends DSMainNode {
 
@@ -29,19 +32,20 @@ public class MainNode extends DSMainNode {
     }
 
     private DSAction updatePollRate() {
-        DSAction addAction = new DSAction() {
+        DSAction act = new DSAction.Parameterless() {
             @Override
-            public ActionResults invoke(DSIActionRequest target) {
-                ((MainNode) target.getTarget()).updatePR(target.getParameters());
-                return null;
+            public ActionResult invoke(DSInfo info, ActionInvocation invocation) {
+                return ((MainNode) info.get()).updatePR(this,invocation.getParameters());
             }
         };
-        addAction.addParameter(Constants.VALUE, DSInt.NULL, "PollRate");
-        return addAction;
+        act.addParameter(Constants.VALUE, DSValueType.NUMBER, "PollRate");
+        return act;
     }
 
-    private void updatePR(DSMap parameters){
+    private ActionResult updatePR(DSAction action,DSMap parameters){
+        DSActionValues actionResult = new DSActionValues(action);
         displaySubNodes(Integer.parseInt(parameters.getString(Constants.VALUE)));
+        return actionResult;
     }
 
     private void displaySubNodes(int pollRate) {

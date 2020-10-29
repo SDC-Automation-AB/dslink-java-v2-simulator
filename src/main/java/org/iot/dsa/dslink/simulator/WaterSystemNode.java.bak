@@ -22,12 +22,4 @@ public class WaterSystemNode extends DSNode {
             put(linkName, new HeaterNode(pollRate));
         }
     }
-
-    public String[] createPumpNodes(String prefix) {
-        String[] pumpnodes = new String[16000];
-        for(int i = 0; i < 16000; i++) {
-            pumpnodes[i] ="Pump " + i;
-        }
-        return pumpnodes;
-    }
 }

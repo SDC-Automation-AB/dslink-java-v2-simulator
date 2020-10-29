@@ -17,18 +17,10 @@ public class PropellersNode extends DSNode {
     }
 
     private void createPumpNodes(int pollRate) {
-        String[] strArr = createPumpNodes();
+        String[] strArr = {"Pump 1", "Pump 2", "Pump 3", "Pump 4"};
         for (int index = 0; index < strArr.length; index++) {
             String linkName = strArr[index];
             put(linkName, new PumpNode(pollRate));
         }
-    }
-
-    public String[] createPumpNodes() {
-        String[] pumpnodes = new String[16000];
-        for(int i = 0; i < 16000; i++) {
-            pumpnodes[i] ="Pump " + i;
-        }
-        return pumpnodes;
     }
 }

@@ -14,7 +14,7 @@ public class Util {
 
     public static Float getFloatRandom(double upper, double lower) {
         double rVal = (Math.random() * (upper - lower)) + lower;
-        DecimalFormat twoDForm = new DecimalFormat("#,00");
+        DecimalFormat twoDForm = new DecimalFormat("#.00");
         return Float.parseFloat(twoDForm.format(rVal));
     }
 
@@ -32,13 +32,5 @@ public class Util {
                 .add("OFF");
         DSFlexEnum selectEnum = DSFlexEnum.valueOf("OFF",selectList);
         return selectEnum;
-    }
-
-    public static String[] createNodeNames(int number,  String prefix) {
-        String[] pumpnodes = new String[number];
-        for(int i = 0; i < number; i++) {
-            pumpnodes[i] = prefix + " " + i;
-        }
-        return pumpnodes;
     }
 }
